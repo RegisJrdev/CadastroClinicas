@@ -40,6 +40,12 @@ return [
      */
     'database' => [
         'central_connection' => env('DB_CONNECTION', 'central'),
+        'tenant_connection' => 'tenant',
+
+
+        'migrations' => [
+            'run_on_creation' => true,
+        ],
 
         /**
          * Connection used as a "template" for the dynamically created tenant database connection.
