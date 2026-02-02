@@ -19,6 +19,11 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
+        'localhost:8000',
+    ],
+
+    'routes' => [
+        'path' => 'routes/tenant.php', 
     ],
 
     /**
@@ -57,7 +62,11 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant',
+        'prefix' => (function () {
+            $dbName = env('DB_DATABASE', 'epublic_local');
+            $parts = explode('_', $dbName);
+            return (count($parts) > 1 ? $parts[1] : $parts[0]) . '_';
+        })(),
         'suffix' => '',
 
         /**
