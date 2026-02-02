@@ -20,10 +20,10 @@ const linkTenantQuestions = (id) => {
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead class="w-[100px] text-center"> Invoice </TableHead>
-        <TableHead class="text-center">Status</TableHead>
-        <TableHead class="text-center"> Amount </TableHead>
-        <TableHead class="text-center"> Amount </TableHead>
+        <TableHead class="w-[100px] text-center"> Nome </TableHead>
+        <TableHead class="text-center">SubDomínio</TableHead>
+        <TableHead class="text-center"> Teste </TableHead>
+        <TableHead class="text-center"> Ações </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
