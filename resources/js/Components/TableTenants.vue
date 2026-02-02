@@ -8,6 +8,12 @@ const props = defineProps({
     default: () => [],
   },
 });
+
+const emit = defineEmits(["request-assign-questions"]);
+
+const linkTenantQuestions = (id) => {
+  emit("request-assign-questions", id);
+}
 </script>
 
 <template>
@@ -30,7 +36,7 @@ const props = defineProps({
         >
         <TableCell class="text-center"> teste </TableCell>
         <TableCell class="text-center">
-          <button @click="open" class="inline-flex items-center gap-2 rounded-md">
+          <button @click="linkTenantQuestions(tenant.id)" class="inline-flex items-center gap-2 rounded-md">
             <Settings class="w-5 h-5" />
           </button>
         </TableCell>

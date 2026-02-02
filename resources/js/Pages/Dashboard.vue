@@ -5,14 +5,22 @@ import { Head } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const open = ref(false);
+const openModalQuestions = ref(false);
+const tenantId = ref(null);
 
 const props = defineProps({
   tenants: {
     type: Object,
   },
+  questions: {
+    type: Object,
+  },
 });
 
-
+const openAssignQuestionsModal = (tenant_id) => {
+  tenantId.value = tenant_id;
+  openModalQuestions.value = true;
+};
 </script>
 
 <template>
@@ -20,16 +28,14 @@ const props = defineProps({
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800 uppercase">
-        Cadastro de Tenants
-      </h2>
+      <h2 class="text-xl font-semibold leading-tight text-gray-800 uppercase">Tenants</h2>
     </template>
 
     <div class="">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="flex justify-end">
           <Button
-            class="mb-4 bg-cyan-400 hover:bg-cyan-500 text-white shadow font-bold"
+            class="flex items-center gap-2 mb-4 rounded-xl bg-cyan-500 hover:bg-cyan-600 px-5 py-2.5 text-white font-semibold shadow-md transition-colors duration-300 ease-in-out"
             @click="open = true"
           >
             Cadastrar Novo Tenant
@@ -38,22 +44,21 @@ const props = defineProps({
 
         <NewEditQuestionDialog v-model:open="open" />
 
-        <div class="border rounded-md max-h-[800px] overflow-auto">
-          <TableTenants class="bg-white" :tenants="props.tenants.data" />
+        <div class="border rounded-xl border-gray-200 max-h-[800px] overflow-auto">
+          <TableTenants
+            @request-assign-questions="openAssignQuestionsModal"
+            class="bg-white"
+            :tenants="props.tenants.data"
+          />
         </div>
 
-        <!-- <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Card Content</p>
-          </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
-        </Card> -->
+        <LinkTenantQuestionsDialog
+          :tenantId="tenantId"
+          :open-modal-questions="openModalQuestions"
+          @close="openModalQuestions = false"
+          :questions="props.questions"
+        />
+
         <!-- <CardTenants :tenants="props.tenants.data"/>  -->
 
         <!-- <div v-if="props.tenants && props.tenants.data.length">

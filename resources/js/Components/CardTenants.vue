@@ -39,7 +39,6 @@ const confirmDelete = (id) => {
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 max-h-[800px] overflow-y-auto"
   >
     <Card v-for="tenant in props.tenants" :key="tenant.id" class="p-3">
-      <!-- Header compacto -->
       <div class="space-y-1">
         <h3 class="text-sm font-semibold leading-tight truncate">
           {{ tenant.name }}
@@ -50,7 +49,6 @@ const confirmDelete = (id) => {
         </p>
       </div>
 
-      <!-- Footer / ações -->
       <div class="mt-3 flex justify-start gap-2">
         <button variant="ghost" size="icon">
           <Settings class="w-4 h-4 hover:bg-slate-400" />

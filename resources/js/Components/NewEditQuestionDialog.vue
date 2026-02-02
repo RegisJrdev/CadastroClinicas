@@ -61,7 +61,7 @@ const emit = defineEmits(['update:open'])
             <PrimaryButton class="bg-red-500 hover:bg-red-600"  variant="outline">Cancelar</PrimaryButton>
           </DialogClose>
 
-          <PrimaryButton class="bg-cyan-400 hover:bg-cyan-500" type="submit">
+          <PrimaryButton class="bg-gradient-to-r from-cyan-500 to-cyan-600" type="submit">
             Salvar
           </PrimaryButton>
         </DialogFooter>

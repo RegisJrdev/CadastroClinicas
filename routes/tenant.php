@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\FormSubmissionController;
+use App\Http\Controllers\PublicFormController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -23,9 +25,11 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', function () {
-        return 'Tenant do: ' . tenant('id');
-    });
+    Route::get('/', [PublicFormController::class, 'show'])->name('public_form.show');
+    Route::post('/public-form-store', [PublicFormController::class, 'store'])->name('public_form.store');
+
+    Route::get('/form-submissions-index', [FormSubmissionController::class, 'index'])->name('form_submissions.index');
+    Route::get('/form-submissions-show/{submission}', [FormSubmissionController::class, 'show'])->name('form_submissions.show');
 });
 
 Route::middleware('tenant')->get('/teste', function () {

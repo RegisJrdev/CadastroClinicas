@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Tenant;
 
+use App\Models\Question;
 use App\Models\Tenant;
 use Inertia\Inertia;
 
@@ -16,8 +17,11 @@ class TenantAllService
             ->latest()
             ->paginate();
 
+        $questions = Question::where('is_active', true)->get();
+
         return Inertia::render('Dashboard', [
-            'tenants' => $tenants
+            'tenants' => $tenants,
+            'questions' => $questions
         ]);
     }
 }

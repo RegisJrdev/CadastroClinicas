@@ -25,12 +25,17 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 
     public function domain()
     {
-        return $this->hasMany(Domain::class);
+        return $this->hasMany(Domain::class , 'tenant_id');
     }
 
-    public static function generateDatabaseName(string $subdomain): string
+    public function questions()
     {
-        return 'tenant_' . str_replace('-', '_', $subdomain);
+        return $this->belongsToMany(Question::class, 'tenant_questions');
+    }
+
+    public static function generateDatabaseName(string $tenantName): string
+    {
+        return 'tenant_' . str_replace('-', '_', $tenantName);
     }
 
     public function getTenantDomainAttribute()

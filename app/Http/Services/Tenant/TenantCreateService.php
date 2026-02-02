@@ -10,7 +10,11 @@ class TenantCreateService
 {
     public function execute(array $data): Tenant
 {
-    $tenant = Tenant::create($data);
+     $tenant = Tenant::create([
+        'id'   => $data['name'], 
+        'name' => $data['name'],     
+        'subdomain' => $data['subdomain'],  
+    ]);
 
     $subdomain = $data['subdomain'] . '.localhost';
 
