@@ -11,8 +11,10 @@ class TenantAllService
     public function execute()
     {
         $tenants = Tenant::query()
-            ->with(['domain' => fn ($query) =>
-                $query->select('id', 'tenant_id', 'domain')
+            ->with([
+                'domain' => fn ($query) =>
+                    $query->select('id', 'tenant_id', 'domain'),
+                'questions'
             ])
             ->latest()
             ->paginate();

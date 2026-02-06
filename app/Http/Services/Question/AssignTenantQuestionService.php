@@ -8,9 +8,14 @@ class AssignTenantQuestionService
 {
     public function execute($tenantId, $questions)
     {
-        $tenant = Tenant::find($tenantId)->questions()->sync($questions);
-        
-         return redirect(route('dashboard'))
-            ->with('sucess', 'Tenant criado com sucesso!');
+        $tenant = Tenant::find($tenantId);
+
+        if (!$tenant) {
+            throw new \Exception('Tenant não encontrado');
+        }
+
+        $tenant->questions()->sync($questions);
+
+        return $tenant;
     }
 }

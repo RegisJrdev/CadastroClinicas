@@ -1,22 +1,32 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Admin\Controllers\QuestionController;
 use App\Http\Controllers\TenantController;
+use App\Models\Question;
+use App\Models\Tenant;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Rotas do Dashboard Admin (usa banco master)
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+| Admin dashboard routes (uses master database)
+|
+*/
+
 Route::prefix('admin')->name('admin.')->middleware(['web', 'auth'])->group(function () {
-    
     Route::get('/', function () {
-        return Inertia::render('Dashboard');
+        $tenants = Tenant::with('questions')->paginate(10);
+        $questions = Question::all();
+
+        return Inertia::render('Dashboard', [
+            'tenants' => $tenants,
+            'questions' => $questions
+        ]);
     })->name('dashboard');
 
-    // CRUD de Tenants
     Route::resource('tenants', TenantController::class);
     Route::post('tenants/{tenant}/questions', [TenantController::class, 'attachQuestions'])
-         ->name('tenants.attach-questions');
-
-    // CRUD de Perguntas
-    // Route::resource('questions', QuestionController::class);
+        ->name('tenants.attach-questions');
 });

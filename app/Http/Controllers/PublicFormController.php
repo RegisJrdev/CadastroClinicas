@@ -2,44 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FormSubmission;
-use App\Models\FormSubmissionAnswer;
+use App\Http\Requests\StorePublicFormRequest;
+use App\Http\Services\PublicForm\PublicFormService;
 use App\Models\Tenant;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PublicFormController extends Controller
 {
+    public function __construct(private PublicFormService $publicFormService) {}
+
     public function index() {
     }
 
     public function show()
     {
         $tenantId = tenant('id');
-        $questions = Tenant::find($tenantId)->questions()->get();
+        $questions = $this->publicFormService->getTenantQuestions($tenantId);
+        $tenant = Tenant::find($tenantId);
 
         return Inertia::render('PublicForm', [
             'questions' => $questions,
-            'tenantId' => $tenantId
+            'tenantId' => $tenantId,
+            'tenantPhoto' => $tenant->photo_url,
+            'tenantBgColor' => $tenant->bg_color,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StorePublicFormRequest $request)
     {
-        $data = $request->validate([
-            'tenant_id' => 'required',
-            'answers' => 'required|array|min:1',
-        ]);
+        $data = $request->validated();
 
-        $submission = FormSubmission::create();
-
-        foreach ($data['answers'] as $questionId => $answer) {
-        FormSubmissionAnswer::create([
-            'form_submission_id' => $submission->id,
-            'question_id' => $questionId,
-            'answer' => $answer,
-        ]);
-    }
+        $this->publicFormService->storeFormSubmission($data);
 
         return redirect(route('public_form.show'));
     }

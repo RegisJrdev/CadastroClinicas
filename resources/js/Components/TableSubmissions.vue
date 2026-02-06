@@ -1,5 +1,5 @@
 <script setup>
-import { FileText  } from "lucide-vue-next";
+import { FileText, Download } from "lucide-vue-next";
 import { Link } from "@inertiajs/vue3";
 import {
   Table,
@@ -42,7 +42,7 @@ const getAnswer = (submission, questionId) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="text-center">ID</TableHead>
+          <TableHead class="text-center">Código</TableHead>
           <TableHead 
             v-for="question in questions" 
             :key="question.id"
@@ -60,7 +60,7 @@ const getAnswer = (submission, questionId) => {
       <TableBody>
         <TableRow v-for="submission in submissions.data" :key="submission.id">
           <TableCell class="text-center font-medium">
-            #{{ submission.id }}
+            {{ submission.id }}
           </TableCell>
           
           <TableCell 
@@ -78,9 +78,15 @@ const getAnswer = (submission, questionId) => {
           </TableCell>
           
           <TableCell class="text-center">
-            <Link :href="route('form_submissions.show', submission.id)">
-              <FileText class="w-5 h-5 mx-auto cursor-pointer hover:text-cyan-600" />
-            </Link>
+            <div class="flex gap-3 justify-center">
+              <a
+                :href="route('form_submissions.pdf', submission.id)"
+                target="_blank"
+                class="inline-block"
+              >
+                <FileText class="w-5 h-5 cursor-pointer hover:text-green-600" />
+              </a>
+            </div>
           </TableCell>
         </TableRow>
       </TableBody>

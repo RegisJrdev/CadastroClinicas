@@ -21,6 +21,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 
     protected $appends = [
         'tenant_domain',
+        'photo_url',
     ];
 
     public function domain()
@@ -39,7 +40,16 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     }
 
     public function getTenantDomainAttribute()
-{
-    return $this->domain->first()?->domain;
-}
+    {
+        return $this->domain->first()?->domain;
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        if ($this->photo_path) {
+            return '/storage/' . $this->photo_path;
+        }
+
+        return null;
+    }
 }

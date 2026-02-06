@@ -1,8 +1,6 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3'
-import { toast } from 'vue-sonner'
 import { router } from '@inertiajs/vue3'
-
 
 const props = defineProps({
   open: { type: Boolean, required: true }
@@ -17,12 +15,8 @@ const submit = () => {
   form.post(route('tenants.store'), {
     onSuccess: () => {
       form.reset()
-      emit('update:open', false) 
-      toast.success('Pergunta criada com sucesso!')
+      emit('update:open', false)
       router.reload({ only: ['tenants'] })
-    },
-    onError: () => {
-      toast.error('Erro ao criar pergunta!')
     }
   })
 }

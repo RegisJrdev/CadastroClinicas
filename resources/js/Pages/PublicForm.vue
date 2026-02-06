@@ -1,8 +1,19 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
-import { toast } from "vue-sonner";
+import { Head, useForm, Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
+import { vMaska } from "maska/vue";
+import { LockKeyhole } from 'lucide-vue-next';
+import Label from "@/Components/ui/label/Label.vue";
+import Input from "@/Components/ui/input/Input.vue";
+
+const getMask = (question) => {
+  const title = question.title.toLowerCase();
+  if (title.includes('cpf')) return '###.###.###-##';
+  if (question.type === 'tel' || title.includes('whatsapp') || title.includes('telefone') || title.includes('celular'))
+    return '(##) #####-####';
+  return undefined;
+};
 
 const props = defineProps({
   questions: {
@@ -12,6 +23,14 @@ const props = defineProps({
   tenantId: {
     type: [Number, String],
     required: true,
+  },
+  tenantPhoto: {
+    type: String,
+    default: null,
+  },
+  tenantBgColor: {
+    type: String,
+    default: null,
   },
 });
 
@@ -26,11 +45,6 @@ const submit = () => {
   form.post(route("public_form.store"), {
     onSuccess: () => {
       form.reset();
-      toast.success("Pergunta criada com sucesso!");
-      router.reload({ only: ["tenants"] });
-    },
-    onError: () => {
-      toast.error("Erro ao criar pergunta!");
     },
   })
 };
@@ -39,28 +53,31 @@ const submit = () => {
 <template>
   <Head title="Formulário" />
 
-   <a
-    :href="route('form_submissions.index')"
+   <Link
+    :href="route('tenant.login')"
     class="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-xl
            bg-white text-black px-4 py-2 text-sm font-semibold
            shadow-lg hover:bg-gray-200 transition"
   >
-    Admin
-  </a>
+    <LockKeyhole class="w-4 h-4" />
+  </Link>
 
   <div class="min-h-screen grid grid-cols-1 md:grid-cols-2">
     
     <!-- Esquerdo -->
     <div class="flex items-center justify-center p-24">
       <img
-        src="/images/bg-logo.jpg"
+        :src="tenantPhoto || '/images/bg-logo.jpg'"
         alt="Imagem do formulário"
         class="w-full h-full object-contain"
       />
     </div>
 
     <!-- Direito -->
-    <div class="flex items-center justify-center p-6 bg-gradient-to-t from-cyan-500 to-cyan-600">
+    <div
+      class="flex items-center justify-center p-6"
+      :style="{ backgroundColor: tenantBgColor || '#06b6d4' }"
+    >
       <form
         @submit.prevent="submit"
         class="w-full max-w-xl bg-white rounded-2xl border shadow-xl p-6"
@@ -87,7 +104,37 @@ const submit = () => {
                 {{ question.title }}
               </Label>
 
+              <!-- Select para tipo option -->
+              <select
+                v-if="question.type === 'option'"
+                :id="`question-${question.id}`"
+                v-model="form.answers[question.id]"
+                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="" disabled>Selecione uma opção</option>
+                <option
+                  v-for="opt in question.options"
+                  :key="opt.value"
+                  :value="opt.value"
+                >
+                  {{ opt.label }}
+                </option>
+              </select>
+
+              <!-- Input com máscara (CPF, Telefone) -->
+              <input
+                v-else-if="getMask(question)"
+                v-maska
+                :data-maska="getMask(question)"
+                :id="`question-${question.id}`"
+                type="text"
+                v-model="form.answers[question.id]"
+                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm accent-cyan-500 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              />
+
+              <!-- Input para outros tipos -->
               <Input
+                v-else
                 :id="`question-${question.id}`"
                 :type="question.type"
                 v-model="form.answers[question.id]"
@@ -101,10 +148,9 @@ const submit = () => {
 
         <button
           type="submit"
-          class="w-full mt-6 rounded-xl bg-gradient-to-r
-                 from-cyan-500 to-cyan-600
-                 text-white py-2.5 font-semibold
+          class="w-full mt-6 rounded-xl text-white py-2.5 font-semibold
                  hover:opacity-90 transition"
+          :style="{ backgroundColor: tenantBgColor || '#06b6d4' }"
         >
           Enviar
         </button>

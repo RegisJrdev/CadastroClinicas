@@ -24,6 +24,8 @@ class TenantStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'subdomain' => 'required|string|unique:domains,domain',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'bg_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
         ];
     }
 
@@ -33,6 +35,10 @@ class TenantStoreRequest extends FormRequest
             'name.required' => 'O nome do tenant é obrigatório',
             'subdomain.required' => 'O domínio é obrigatório',
             'subdomain.unique' => 'Este domínio já está em uso',
+            'photo.image' => 'O arquivo deve ser uma imagem',
+            'photo.mimes' => 'A imagem deve ser JPG, JPEG, PNG ou WebP',
+            'photo.max' => 'A imagem deve ter no máximo 2MB',
+            'bg_color.regex' => 'A cor deve estar no formato hexadecimal (#RRGGBB)',
         ];
     }
 }

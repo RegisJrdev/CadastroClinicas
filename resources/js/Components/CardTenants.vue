@@ -23,13 +23,9 @@ const askDelete = (id) => {
 const confirmDelete = (id) => {
   router.delete(route("tenants.destroy", id), {
     onSuccess: () => {
-      toast.success("Tenant removido com sucesso");
       open.value = false;
       tenantIdToDelete.value = null;
-    },
-    onError: () => {
-      toast.error("Erro ao remover tenant");
-    },
+    }
   });
 };
 </script>

@@ -1,7 +1,13 @@
 <?php
 
-use App\Http\Controllers\TenantController;
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/questions', [TenantController::class , 'store'] )->name('questions.store');
+/*
+|--------------------------------------------------------------------------
+| Questions Routes
+|--------------------------------------------------------------------------
+|
+| This file is reserved for question-related routes.
+| Currently not in use.
+|
+*/

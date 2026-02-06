@@ -64,3 +64,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Toaster z-index fix for modals/dialogs */
+[data-sonner-toaster] {
+  z-index: 100 !important;
+}
+
+[data-sonner-toast] {
+  z-index: 100 !important;
+}
+
+/* Force toaster position to top-right */
+[data-sonner-toaster][data-x-position="right"] {
+  right: 0 !important;
+  left: auto !important;
+}
+
+[data-sonner-toaster][data-y-position="top"] {
+  top: 0 !important;
+  bottom: auto !important;
+}

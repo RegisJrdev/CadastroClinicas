@@ -6,6 +6,7 @@ class TenantService
 {
     public function __construct(
         private TenantCreateService $createService,
+        private TenantUpdateService $updateService,
         private TenantDeleteService $deleteService,
         // private TenantShowService $showService,
         // private TenantListService $listService
@@ -14,16 +15,16 @@ class TenantService
     {
         return $this->createService->execute($data);
     }
-    
+
+    public function update($tenant, $data)
+    {
+        return $this->updateService->execute($tenant, $data);
+    }
+
     public function delete($id)
     {
         return $this->deleteService->execute($id);
     }
-
-    // public function update($id, $data)
-    // {
-    //     return $this->updateService->execute($id, $data);
-    // }
     
     
     // public function show($id)

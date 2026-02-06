@@ -49,7 +49,7 @@ return [
 
 
         'migrations' => [
-            'run_on_creation' => true,
+            'run_on_creation' => true,  
         ],
 
         /**

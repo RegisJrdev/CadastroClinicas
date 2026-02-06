@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('type', ['text', 'number', 'date', 'select', 'textarea']);
+            $table->enum('type', ['text', 'email', 'number', 'tel', 'date', 'option']);
+            $table->json('options')->nullable();
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('tenant_questions', function (Blueprint $table) {

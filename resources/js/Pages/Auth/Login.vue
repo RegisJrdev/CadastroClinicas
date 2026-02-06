@@ -3,7 +3,7 @@ import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { Button } from '@/Components/ui/button';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -33,67 +33,73 @@ const submit = () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <div class="mb-8 text-center border-b border-gray-200 pb-6">
+            <h2 class="text-3xl font-bold text-gray-900">Bem-vindo</h2>
+            <p class="text-sm text-gray-600 mt-2">Entre com suas credenciais para acessar o sistema</p>
+        </div>
+
+        <div v-if="status" class="mb-4 p-3 text-sm font-medium text-green-700 bg-green-50 rounded-lg border border-green-200">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="space-y-5">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" class="font-semibold text-gray-700" />
 
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full p-2 border"
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:border-gray-400"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="seu@email.com"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <div>
+                <InputLabel for="password" value="Senha" class="font-semibold text-gray-700" />
 
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full p-2 border"
+                    class="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all shadow-sm hover:border-gray-400"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    placeholder="••••••••"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
+            <div class="block">
+                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors -ml-2">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
-                    >
+                    <span class="ms-2 text-sm text-gray-700 font-medium">Lembrar-me</span>
                 </label>
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="pt-4 flex items-center justify-between border-t border-gray-200">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="text-sm text-cyan-600 hover:text-cyan-700 font-medium transition-colors"
                 >
-                    Forgot your password?
+                    Esqueceu a senha?
                 </Link>
 
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
                     :disabled="form.processing"
                 >
-                    Log in
-                </PrimaryButton>
+                    Entrar
+                </Button>
             </div>
         </form>
     </GuestLayout>

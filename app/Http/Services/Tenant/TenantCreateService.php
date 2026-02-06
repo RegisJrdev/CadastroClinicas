@@ -3,30 +3,39 @@
 namespace App\Http\Services\Tenant;
 
 use App\Models\Tenant;
-use PhpParser\Node\Expr\Array_;
+use Illuminate\Support\Facades\Storage;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class TenantCreateService
 {
     public function execute(array $data): Tenant
-{
-     $tenant = Tenant::create([
-        'id'   => $data['name'], 
-        'name' => $data['name'],     
-        'subdomain' => $data['subdomain'],  
-    ]);
+    {
+        $tenantData = [
+            'id'        => $data['name'],
+            'name'      => $data['name'],
+            'subdomain' => $data['subdomain'],
+        ];
 
-    $subdomain = $data['subdomain'] . '.localhost';
+        if (isset($data['photo']) && $data['photo']) {
+            $tenantData['photo_path'] = $data['photo']->store('tenants', 'public');
+        }
 
-    if (Domain::where('domain', $subdomain)->exists()) {
-        throw new \Exception('Subdomínio em uso');
-    };
+        if (isset($data['bg_color']) && $data['bg_color']) {
+            $tenantData['bg_color'] = $data['bg_color'];
+        }
 
-    $tenant->domains()->create([
-        'domain' => $data['subdomain'] . '.localhost'
-    ]);
+        $tenant = Tenant::create($tenantData);
 
-    return $tenant;
-}
+        $subdomain = $data['subdomain'] . '.localhost';
 
+        if (Domain::where('domain', $subdomain)->exists()) {
+            throw new \Exception('Subdomínio em uso');
+        }
+
+        $tenant->domains()->create([
+            'domain' => $subdomain,
+        ]);
+
+        return $tenant;
+    }
 }
