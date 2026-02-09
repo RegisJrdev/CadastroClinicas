@@ -10,6 +10,16 @@ class TenantCreateService
 {
     public function execute(array $data): Tenant
     {
+        if (Tenant::where('id', $data['name'])->exists()) {
+            throw new \Exception('Já existe uma clínica com este nome.');
+        }
+
+        $subdomain = $data['subdomain'] . '.localhost';
+
+        if (Domain::where('domain', $subdomain)->exists()) {
+            throw new \Exception('Subdomínio em uso.');
+        }
+
         $tenantData = [
             'id'        => $data['name'],
             'name'      => $data['name'],
@@ -25,12 +35,6 @@ class TenantCreateService
         }
 
         $tenant = Tenant::create($tenantData);
-
-        $subdomain = $data['subdomain'] . '.localhost';
-
-        if (Domain::where('domain', $subdomain)->exists()) {
-            throw new \Exception('Subdomínio em uso');
-        }
 
         $tenant->domains()->create([
             'domain' => $subdomain,

@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             padding: 50px;
             color: #2d3748;
             line-height: 1.6;
@@ -20,15 +20,32 @@
 
         .header {
             margin-bottom: 40px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #000;
+            padding: 20px 25px;
+            background-color: #2d3748;
+            text-align: center;
         }
 
         .header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .header .subtitle {
+            font-size: 10px;
+            color: #b0b0b0;
+            letter-spacing: 0.5px;
+        }
+
+        .header .divider {
+            width: 60px;
+            height: 2px;
+            background-color: #b0b0b0;
+            margin: 10px auto 8px;
         }
 
         .info-section {
@@ -48,7 +65,7 @@
         }
 
         .info-row .value {
-            color: #2d3748;
+            color: #e2e8f0;
         }
 
         .content-section {
@@ -56,6 +73,7 @@
         }
 
         .section-title {
+            font-family: Arial, sans-serif;
             font-size: 14px;
             font-weight: 600;
             color: #000;
@@ -65,21 +83,26 @@
         }
 
         .answer-item {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             page-break-inside: avoid;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .answer-item .question {
             font-weight: 600;
             font-size: 11px;
-            color: #4a5568;
-            margin-bottom: 5px;
+            color: #2d3748;
+            background-color: #e2e8f0;
+            padding: 8px 12px;
         }
 
         .answer-item .answer {
             font-size: 11px;
             color: #2d3748;
-            padding-left: 0;
+            background-color: #ffffff;
+            padding: 8px 12px;
         }
 
         .footer {
@@ -97,18 +120,9 @@
 </head>
 <body>
     <div class="header">
-        <h1>RELATÓRIO DE SUBMISSÃO</h1>
-    </div>
-
-    <div class="info-section">
-        <div class="info-row">
-            <span class="label">ID da Submissão:</span>
-            <span class="value">#{{ $submission->id }}</span>
-        </div>
-        <div class="info-row">
-            <span class="label">Data:</span>
-            <span class="value">{{ \Carbon\Carbon::parse($submission->created_at)->setTimezone('America/Sao_Paulo')->format('d/m/Y H:i') }}</span>
-        </div>
+        <h1>Relatório de Submissão</h1>
+        <div class="divider"></div>
+        <div class="subtitle">Submissão #{{ $submission->id }} &mdash; {{ \Carbon\Carbon::parse($submission->created_at)->setTimezone('America/Sao_Paulo')->format('d/m/Y') }}</div>
     </div>
 
     <div class="content-section">

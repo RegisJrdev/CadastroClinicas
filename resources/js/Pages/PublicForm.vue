@@ -3,7 +3,7 @@ import { Head, useForm, Link } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import { vMaska } from "maska/vue";
-import { LockKeyhole } from 'lucide-vue-next';
+import { LockKeyhole, LoaderCircle, CircleCheck } from 'lucide-vue-next';
 import Label from "@/Components/ui/label/Label.vue";
 import Input from "@/Components/ui/input/Input.vue";
 
@@ -35,16 +35,18 @@ const props = defineProps({
 });
 
 
+const submitted = ref(false);
+
 const form = useForm({
   tenant_id: props.tenantId,
   answers: {},
 })
 
-
 const submit = () => {
   form.post(route("public_form.store"), {
     onSuccess: () => {
       form.reset();
+      submitted.value = true;
     },
   })
 };
@@ -78,7 +80,27 @@ const submit = () => {
       class="flex items-center justify-center p-6"
       :style="{ backgroundColor: tenantBgColor || '#06b6d4' }"
     >
+      <!-- Tela de sucesso -->
+      <div
+        v-if="submitted"
+        class="w-full max-w-xl bg-white rounded-2xl border shadow-xl p-10 text-center"
+      >
+        <CircleCheck class="w-16 h-16 mx-auto mb-4 text-green-500" />
+        <h2 class="text-2xl font-semibold mb-2">Cadastro enviado!</h2>
+        <p class="text-gray-500 mb-6">Seus dados foram registrados com sucesso.</p>
+        <button
+          type="button"
+          @click="submitted = false"
+          class="rounded-xl text-white px-6 py-2.5 font-semibold hover:opacity-90 transition"
+          :style="{ backgroundColor: tenantBgColor || '#06b6d4' }"
+        >
+          Enviar outro cadastro
+        </button>
+      </div>
+
+      <!-- Formulário -->
       <form
+        v-else
         @submit.prevent="submit"
         class="w-full max-w-xl bg-white rounded-2xl border shadow-xl p-6"
       >
@@ -115,7 +137,7 @@ const submit = () => {
                 <option
                   v-for="opt in question.options"
                   :key="opt.value"
-                  :value="opt.value"
+                  :value="opt.label"
                 >
                   {{ opt.label }}
                 </option>
@@ -142,17 +164,18 @@ const submit = () => {
               />
             </div>
           </div>
-
-          <pre>{{ form.questions }}</pre>
         </div>
 
         <button
           type="submit"
+          :disabled="form.processing"
           class="w-full mt-6 rounded-xl text-white py-2.5 font-semibold
-                 hover:opacity-90 transition"
+                 hover:opacity-90 transition flex items-center justify-center gap-2
+                 disabled:opacity-60 disabled:cursor-not-allowed"
           :style="{ backgroundColor: tenantBgColor || '#06b6d4' }"
         >
-          Enviar
+          <LoaderCircle v-if="form.processing" class="w-5 h-5 animate-spin" />
+          {{ form.processing ? 'Enviando...' : 'Enviar' }}
         </button>
       </form>
     </div>
