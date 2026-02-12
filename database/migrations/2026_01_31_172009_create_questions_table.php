@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->enum('type', ['text', 'email', 'number', 'tel', 'date', 'option']);
             $table->json('options')->nullable();
+            $table->boolean('is_required')->default(false);
+            $table->boolean('is_unique')->default(false);
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
@@ -26,9 +28,20 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id');
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_required')->default(false);
             $table->timestamps();
 
+            $table->foreign('tenant_id')->references('id')->on('tenants')
+                ->onDelete('cascade');
+        });
+
+        Schema::create('unique_answers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->string('answer_value');
+            $table->string('tenant_id');
+            $table->timestamps();
+
+            $table->unique(['question_id', 'answer_value']);
             $table->foreign('tenant_id')->references('id')->on('tenants')
                 ->onDelete('cascade');
         });
@@ -39,6 +52,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('unique_answers');
         Schema::dropIfExists('tenant_questions');
         Schema::dropIfExists('questions');
     }

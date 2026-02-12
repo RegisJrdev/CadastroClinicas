@@ -67,13 +67,6 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block">
-                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors -ml-2">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-700 font-medium">Lembrar-me</span>
-                </label>
-            </div>
-
             <div class="pt-4 flex items-center justify-between border-t border-gray-200">
                 <Link
                     :href="route('public_form.show')"

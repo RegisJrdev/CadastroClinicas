@@ -23,7 +23,9 @@ const emit = defineEmits(['update:open'])
 const form = useForm({
   title: '',
   type: 'text',
-  options: []
+  options: [],
+  is_required: false,
+  is_unique: false,
 })
 
 const isOptionType = computed(() => form.type === 'option')
@@ -34,6 +36,8 @@ watch(() => props.question, (newQuestion) => {
     form.title = newQuestion.title
     form.type = newQuestion.type
     form.options = newQuestion.options?.map(opt => opt.label) || []
+    form.is_required = newQuestion.is_required || false
+    form.is_unique = newQuestion.is_unique || false
   } else {
     form.reset()
     form.options = []
@@ -66,7 +70,9 @@ const submit = () => {
   // Prepara os dados para envio
   const data = {
     title: form.title,
-    type: form.type
+    type: form.type,
+    is_required: form.is_required,
+    is_unique: form.is_unique,
   }
 
   // Só inclui options se o tipo for 'option'
@@ -128,6 +134,28 @@ const typeOptions = [
               </option>
             </select>
             <span v-if="form.errors.type" class="text-sm text-red-600">{{ form.errors.type }}</span>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <input
+                id="is_required"
+                type="checkbox"
+                v-model="form.is_required"
+                class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
+              />
+              <Label for="is_required" class="cursor-pointer">Campo obrigatório</Label>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input
+                id="is_unique"
+                type="checkbox"
+                v-model="form.is_unique"
+                class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
+              />
+              <Label for="is_unique" class="cursor-pointer">Campo único</Label>
+            </div>
           </div>
 
           <div v-if="isOptionType" class="grid gap-3 border-t pt-4">

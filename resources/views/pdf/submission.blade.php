@@ -22,6 +22,29 @@
             margin-bottom: 40px;
             padding: 20px 25px;
             background-color: #2d3748;
+        }
+
+        .header-content {
+            display: table;
+            width: 100%;
+        }
+
+        .header-logo {
+            display: table-cell;
+            vertical-align: middle;
+            width: 80px;
+        }
+
+        .header-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .header-info {
+            display: table-cell;
+            vertical-align: middle;
             text-align: center;
         }
 
@@ -48,24 +71,10 @@
             margin: 10px auto 8px;
         }
 
-        .info-section {
-            margin-bottom: 35px;
-        }
-
-        .info-row {
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
-
-        .info-row .label {
-            font-weight: 600;
-            display: inline-block;
-            width: 120px;
-            color: #4a5568;
-        }
-
-        .info-row .value {
-            color: #e2e8f0;
+        .header .address {
+            font-size: 9px;
+            color: #a0aec0;
+            margin-top: 4px;
         }
 
         .content-section {
@@ -120,9 +129,29 @@
 </head>
 <body>
     <div class="header">
-        <h1>Relatório de Submissão</h1>
-        <div class="divider"></div>
-        <div class="subtitle">Submissão #{{ $submission->id }} &mdash; {{ \Carbon\Carbon::parse($submission->created_at)->setTimezone('America/Sao_Paulo')->format('d/m/Y') }}</div>
+        <div class="header-content">
+            @if($logoBase64)
+                <div class="header-logo">
+                    <img src="{{ $logoBase64 }}" alt="Logo">
+                </div>
+            @endif
+            <div class="header-info">
+                <h1>{{ $tenant->name ?? 'Relatório de Submissão' }}</h1>
+                <div class="divider"></div>
+                <div class="subtitle">Submissão #{{ $submission->id }} &mdash; {{ \Carbon\Carbon::parse($submission->created_at)->setTimezone('America/Sao_Paulo')->format('d/m/Y') }}</div>
+                @if($tenant->logradouro || $tenant->cidade)
+                    <div class="address">
+                        @if($tenant->logradouro){{ $tenant->logradouro }}@endif
+                        @if($tenant->numero), {{ $tenant->numero }}@endif
+                        @if($tenant->complemento) - {{ $tenant->complemento }}@endif
+                        @if($tenant->bairro) &mdash; {{ $tenant->bairro }}@endif
+                        @if($tenant->cidade) &mdash; {{ $tenant->cidade }}@endif
+                        @if($tenant->estado)/{{ $tenant->estado }}@endif
+                        @if($tenant->cep) &mdash; CEP: {{ $tenant->cep }}@endif
+                    </div>
+                @endif
+            </div>
+        </div>
     </div>
 
     <div class="content-section">

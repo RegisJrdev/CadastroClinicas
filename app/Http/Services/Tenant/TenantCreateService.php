@@ -34,6 +34,17 @@ class TenantCreateService
             $tenantData['bg_color'] = $data['bg_color'];
         }
 
+        if (isset($data['button_color']) && $data['button_color']) {
+            $tenantData['button_color'] = $data['button_color'];
+        }
+
+        $addressFields = ['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado'];
+        foreach ($addressFields as $field) {
+            if (isset($data[$field])) {
+                $tenantData[$field] = $data[$field];
+            }
+        }
+
         $tenant = Tenant::create($tenantData);
 
         $tenant->domains()->create([

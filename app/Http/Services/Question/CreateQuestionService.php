@@ -23,6 +23,8 @@ class CreateQuestionService
             'title' => $data['title'],
             'type' => $data['type'],
             'options' => $options,
+            'is_required' => $data['is_required'] ?? false,
+            'is_unique' => $data['is_unique'] ?? false,
         ]);
     }
 }

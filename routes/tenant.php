@@ -34,6 +34,7 @@ Route::middleware([
         Route::post('/admin/logout', [TenantAuthController::class, 'logout'])->name('tenant.logout');
 
         Route::get('/form-submissions', [FormSubmissionController::class, 'index'])->name('form_submissions.index');
+        Route::get('/form-submissions/report', [FormSubmissionController::class, 'reportPdf'])->name('form_submissions.report');
         Route::get('/form-submissions/{submission}', [FormSubmissionController::class, 'show'])->name('form_submissions.show');
         Route::get('/form-submissions/{submission}/pdf', [FormSubmissionController::class, 'downloadPdf'])->name('form_submissions.pdf');
     });

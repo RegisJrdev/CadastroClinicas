@@ -25,11 +25,13 @@
         "@vueuse/core": "^14.2.0",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "colorthief": "^2.6.0",
         "lucide-vue-next": "^0.563.0",
         "maska": "^3.2.0",
         "reka-ui": "^2.8.0",
         "tailwind-merge": "^3.4.0",
         "tailwindcss-animate": "^1.0.7",
+        "vee-validate": "^4.15.1",
         "vue-sonner": "^2.0.9"
     }
 }

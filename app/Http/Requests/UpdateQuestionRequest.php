@@ -18,6 +18,8 @@ class UpdateQuestionRequest extends FormRequest
             'type' => 'required|string|in:text,email,number,tel,date,option',
             'options' => 'required_if:type,option|array|min:1',
             'options.*' => 'required_if:type,option|string|max:255',
+            'is_required' => 'nullable|boolean',
+            'is_unique' => 'nullable|boolean',
         ];
     }
 

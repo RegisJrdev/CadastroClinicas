@@ -24,6 +24,17 @@ class TenantUpdateService
             $updateData['bg_color'] = $data['bg_color'];
         }
 
+        if (isset($data['button_color'])) {
+            $updateData['button_color'] = $data['button_color'];
+        }
+
+        $addressFields = ['cep', 'logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'estado'];
+        foreach ($addressFields as $field) {
+            if (isset($data[$field])) {
+                $updateData[$field] = $data[$field];
+            }
+        }
+
         $tenant->update($updateData);
 
         if (isset($data['subdomain']) && $data['subdomain'] !== '') {

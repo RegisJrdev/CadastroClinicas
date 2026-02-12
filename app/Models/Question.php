@@ -15,11 +15,15 @@ class Question extends Model
         'title',
         'type',
         'options',
+        'is_required',
+        'is_unique',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_required' => 'boolean',
+        'is_unique' => 'boolean',
         'options' => 'array',
     ];
 

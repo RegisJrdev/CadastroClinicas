@@ -25,6 +25,8 @@ class PublicFormController extends Controller
             'tenantId' => $tenantId,
             'tenantPhoto' => $tenant->photo_url,
             'tenantBgColor' => $tenant->bg_color,
+            'tenantButtonColor' => $tenant->button_color,
+            'tenantName' => $tenant->name
         ]);
     }
 
