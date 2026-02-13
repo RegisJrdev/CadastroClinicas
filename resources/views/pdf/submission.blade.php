@@ -12,77 +12,71 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            padding: 50px;
+            font-family: Helvetica, sans-serif;
+            padding: 40px;
             color: #2d3748;
             line-height: 1.6;
         }
 
         .header {
-            margin-bottom: 40px;
-            padding: 20px 25px;
-            background-color: #2d3748;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #cbd5e0;
         }
 
-        .header-content {
+        .header-table {
             display: table;
             width: 100%;
         }
 
-        .header-logo {
+        .header-left {
             display: table-cell;
             vertical-align: middle;
-            width: 80px;
+            width: 170px;
         }
 
-        .header-logo img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            border-radius: 4px;
+        .header-left img {
+            max-height: 150px;
+            max-width: 160px;
         }
 
-        .header-info {
+        .header-center {
             display: table-cell;
             vertical-align: middle;
             text-align: center;
         }
 
-        .header h1 {
-            font-family: Arial, sans-serif;
-            font-size: 22px;
+        .header-center h1 {
+            font-size: 16px;
             font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 1.5px;
+            color: #2d3748;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
-        .header .subtitle {
+        .header-center .subtitle {
             font-size: 10px;
-            color: #b0b0b0;
-            letter-spacing: 0.5px;
+            color: #718096;
+            letter-spacing: 0.3px;
         }
 
-        .header .divider {
-            width: 60px;
-            height: 2px;
-            background-color: #b0b0b0;
-            margin: 10px auto 8px;
-        }
-
-        .header .address {
-            font-size: 9px;
-            color: #a0aec0;
-            margin-top: 4px;
+        .header-right {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: right;
+            width: 200px;
+            font-size: 11px;
+            color: #4a5568;
+            line-height: 1.5;
         }
 
         .content-section {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .section-title {
-            font-family: Arial, sans-serif;
+            font-family: Helvetica, sans-serif;
             font-size: 14px;
             font-weight: 600;
             color: #000;
@@ -117,8 +111,8 @@
         .footer {
             position: fixed;
             bottom: 30px;
-            left: 50px;
-            right: 50px;
+            left: 40px;
+            right: 40px;
             padding-top: 10px;
             border-top: 1px solid #cbd5e0;
             font-size: 9px;
@@ -129,33 +123,34 @@
 </head>
 <body>
     <div class="header">
-        <div class="header-content">
-            @if($logoBase64)
-                <div class="header-logo">
+        <div class="header-table">
+            <div class="header-left">
+                @if($logoBase64)
                     <img src="{{ $logoBase64 }}" alt="Logo">
-                </div>
-            @endif
-            <div class="header-info">
+                @endif
+            </div>
+            <div class="header-center">
                 <h1>{{ $tenant->name ?? 'Relatório de Submissão' }}</h1>
-                <div class="divider"></div>
                 <div class="subtitle">Submissão #{{ $submission->id }} &mdash; {{ \Carbon\Carbon::parse($submission->created_at)->setTimezone('America/Sao_Paulo')->format('d/m/Y') }}</div>
+            </div>
+            <div class="header-right">
                 @if($tenant->logradouro || $tenant->cidade)
-                    <div class="address">
-                        @if($tenant->logradouro){{ $tenant->logradouro }}@endif
-                        @if($tenant->numero), {{ $tenant->numero }}@endif
-                        @if($tenant->complemento) - {{ $tenant->complemento }}@endif
-                        @if($tenant->bairro) &mdash; {{ $tenant->bairro }}@endif
-                        @if($tenant->cidade) &mdash; {{ $tenant->cidade }}@endif
-                        @if($tenant->estado)/{{ $tenant->estado }}@endif
-                        @if($tenant->cep) &mdash; CEP: {{ $tenant->cep }}@endif
-                    </div>
+                    @if($tenant->logradouro){{ $tenant->logradouro }}@endif
+                    @if($tenant->numero), {{ $tenant->numero }}@endif
+                    @if($tenant->complemento) - {{ $tenant->complemento }}@endif
+                    <br>
+                    @if($tenant->bairro){{ $tenant->bairro }}@endif
+                    @if($tenant->cidade) &mdash; {{ $tenant->cidade }}@endif
+                    @if($tenant->estado)/{{ $tenant->estado }}@endif
+                    <br>
+                    @if($tenant->cep)CEP: {{ $tenant->cep }}@endif
                 @endif
             </div>
         </div>
     </div>
 
     <div class="content-section">
-        <h2 class="section-title">Respostas</h2>
+        <h2 class="section-title">Ficha de Cadastro</h2>
 
         @foreach($submission->answers as $answer)
             <div class="answer-item">
@@ -166,7 +161,7 @@
     </div>
 
     <div class="footer">
-        Documento gerado em {{ now()->setTimezone('America/Sao_Paulo')->format('d/m/Y \à\s H:i') }}
+        Gerado por {{ auth()->user()->name }} em {{ now()->setTimezone('America/Sao_Paulo')->format('d/m/Y \à\s H:i') }}
     </div>
 </body>
 </html>
