@@ -17,9 +17,12 @@ class FormSubmissionController extends Controller
     public function index()
     {
         $submissions = $this->formSubmissionService->getSubmissions();
+        $tenant = Tenant::find(tenant('id'));
 
         return Inertia::render('FormSubmission/Index', [
-            'submissions' => $submissions
+            'submissions' => $submissions,
+            'tenantName' => $tenant->name,
+            'tenantPhoto' => $tenant->photo_url,
         ]);
     }
 
@@ -47,10 +50,11 @@ class FormSubmissionController extends Controller
 
         $tenant = Tenant::find(tenant('id'));
         $logoBase64 = null;
-        if ($tenant->photo_path && Storage::disk('public')->exists($tenant->photo_path)) {
-            $file = Storage::disk('public')->get($tenant->photo_path);
-            $mime = Storage::disk('public')->mimeType($tenant->photo_path);
-            $logoBase64 = 'data:' . $mime . ';base64,' . base64_encode($file);
+        if ($tenant->photo_path) {
+            $absolutePath = base_path('storage/app/public/' . $tenant->photo_path);
+            if (file_exists($absolutePath)) {
+                $logoBase64 = 'data:' . mime_content_type($absolutePath) . ';base64,' . base64_encode(file_get_contents($absolutePath));
+            }
         }
 
         $pdf = Pdf::loadView('pdf.submissions-report', [
@@ -69,10 +73,11 @@ class FormSubmissionController extends Controller
 
         $tenant = Tenant::find(tenant('id'));
         $logoBase64 = null;
-        if ($tenant->photo_path && Storage::disk('public')->exists($tenant->photo_path)) {
-            $file = Storage::disk('public')->get($tenant->photo_path);
-            $mime = Storage::disk('public')->mimeType($tenant->photo_path);
-            $logoBase64 = 'data:' . $mime . ';base64,' . base64_encode($file);
+        if ($tenant->photo_path) {
+            $absolutePath = base_path('storage/app/public/' . $tenant->photo_path);
+            if (file_exists($absolutePath)) {
+                $logoBase64 = 'data:' . mime_content_type($absolutePath) . ';base64,' . base64_encode(file_get_contents($absolutePath));
+            }
         }
 
         $pdf = Pdf::loadView('pdf.submission', [

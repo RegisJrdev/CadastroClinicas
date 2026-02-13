@@ -38,14 +38,14 @@ const getAnswer = (submission, questionId) => {
 <template>
   <div class="p-6">
     <div class="flex items-center justify-between mb-4">
-      <h1 class="text-2xl font-bold">Submissões</h1>
+      <h1 class="text-2xl font-bold">Cadastros Registrados</h1>
       <a
         :href="route('form_submissions.report')"
         target="_blank"
         class="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded hover:bg-cyan-700 transition-colors"
       >
         <Download class="w-4 h-4" />
-        Gerar Relatório
+        Relatório Geral
       </a>
     </div>
     
