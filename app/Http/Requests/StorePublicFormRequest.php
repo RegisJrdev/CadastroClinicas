@@ -18,6 +18,7 @@ class StorePublicFormRequest extends FormRequest
         $rules = [
             'tenant_id' => 'required',
             'answers' => 'required|array|min:1',
+            'answers.*' => 'nullable',
         ];
 
         $answers = $this->input('answers', []);

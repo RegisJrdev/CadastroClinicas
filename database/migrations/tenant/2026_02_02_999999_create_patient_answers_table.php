@@ -6,27 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('form_submission_answers', function (Blueprint $table) {
+        Schema::create('patient_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_submission_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('question_id');
-            $table->json('answer');
+            $table->string('answer')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('form_submission_answers');
+        Schema::dropIfExists('patient_answers');
     }
 };

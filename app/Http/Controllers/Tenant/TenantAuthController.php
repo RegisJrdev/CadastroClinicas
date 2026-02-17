@@ -24,7 +24,7 @@ class TenantAuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('form_submissions.index'));
+            return redirect()->intended(route('patients.index'));
         }
 
         return back()->withErrors([
