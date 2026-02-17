@@ -8,6 +8,8 @@ import LinkTenantQuestionsDialog from "@/Components/LinkTenantQuestionsDialog.vu
 import { Button } from "@/Components/ui/button";
 import { Head, router } from "@inertiajs/vue3";
 import { ref } from "vue";
+import BarChart from "@/Components/BarChart.vue";
+
 
 const activeTab = ref("tenants");
 const open = ref(false);
@@ -60,6 +62,28 @@ const viewQuestion = (question) => {
   <Head title="Dashboard" />
 
   <AuthenticatedLayout>
+
+    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-6">
+      <BarChart
+        title="Cadastros Mensais"
+        description="Janeiro - Junho 2024"
+        :data="[
+          { label: 'Jan', value: 42 },
+          { label: 'Fev', value: 78 },
+          { label: 'Mar', value: 65 },
+          { label: 'Abr', value: 120 },
+          { label: 'Mai', value: 95 },
+          { label: 'Jun', value: 330 },
+          { label: 'Jun', value: 150 },
+          { label: 'Jun', value: 150 },
+          { label: 'Jun', value: 150 },
+          { label: 'Jun', value: 150 },
+          { label: 'Jun', value: 150 },
+          { label: 'Jun', value: 150 },
+        ]"
+        class=""
+      />
+    </div>
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800 uppercase">
         Dashboard

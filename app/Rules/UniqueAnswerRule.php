@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\UniqueAnswer;
+use App\Models\CentralPatient;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -16,12 +16,12 @@ class UniqueAnswerRule implements ValidationRule
             return;
         }
 
-        $exists = UniqueAnswer::where('question_id', $this->questionId)
-            ->where('answer_value', $value)
-            ->exists();
+        $cpf = preg_replace('/\D/', '', $value);
+
+        $exists = CentralPatient::where('cpf', $cpf)->exists();
 
         if ($exists) {
-            $fail('Este valor já foi cadastrado anteriormente.');
+            $fail('Este paciente já foi cadastrado anteriormente.');
         }
     }
 }

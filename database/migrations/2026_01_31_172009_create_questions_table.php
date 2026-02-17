@@ -34,16 +34,22 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::create('unique_answers', function (Blueprint $table) {
+        Schema::create('central_patients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('question_id')->constrained()->onDelete('cascade');
-            $table->string('answer_value');
+            $table->string('cpf')->unique();
             $table->string('tenant_id');
             $table->timestamps();
 
-            $table->unique(['question_id', 'answer_value']);
             $table->foreign('tenant_id')->references('id')->on('tenants')
                 ->onDelete('cascade');
+        });
+
+        Schema::create('central_patient_answers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('central_patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->string('answer')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -52,7 +58,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('unique_answers');
+        Schema::dropIfExists('central_patient_answers');
+        Schema::dropIfExists('central_patients');
         Schema::dropIfExists('tenant_questions');
         Schema::dropIfExists('questions');
     }

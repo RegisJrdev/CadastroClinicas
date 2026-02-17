@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\FormSubmissionController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PublicFormController;
 use App\Http\Controllers\Tenant\TenantAuthController;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +33,10 @@ Route::middleware([
     Route::middleware('auth')->group(function () {
         Route::post('/admin/logout', [TenantAuthController::class, 'logout'])->name('tenant.logout');
 
-        Route::get('/form-submissions', [FormSubmissionController::class, 'index'])->name('form_submissions.index');
-        Route::get('/form-submissions/report', [FormSubmissionController::class, 'reportPdf'])->name('form_submissions.report');
-        Route::get('/form-submissions/{submission}', [FormSubmissionController::class, 'show'])->name('form_submissions.show');
-        Route::get('/form-submissions/{submission}/pdf', [FormSubmissionController::class, 'downloadPdf'])->name('form_submissions.pdf');
+        Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+        Route::get('/patients/report', [PatientController::class, 'reportPdf'])->name('patients.report');
+        Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
+        Route::get('/patients/{patient}/pdf', [PatientController::class, 'downloadPdf'])->name('patients.pdf');
     });
 });
 

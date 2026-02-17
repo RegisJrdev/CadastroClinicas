@@ -6,7 +6,7 @@ class PublicFormService
 {
     public function __construct(
         private GetTenantQuestionsService $getTenantQuestionsService,
-        private StoreFormSubmissionService $storeFormSubmissionService
+        private StorePatientService $storePatientService
     ) {}
 
     public function getTenantQuestions(string $tenantId)
@@ -14,8 +14,8 @@ class PublicFormService
         return $this->getTenantQuestionsService->execute($tenantId);
     }
 
-    public function storeFormSubmission(array $data)
+    public function storePatient(array $data)
     {
-        return $this->storeFormSubmissionService->execute($data);
+        return $this->storePatientService->execute($data);
     }
 }

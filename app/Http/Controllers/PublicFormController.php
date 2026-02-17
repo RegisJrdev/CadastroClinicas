@@ -34,7 +34,7 @@ class PublicFormController extends Controller
     {
         $data = $request->validated();
 
-        $this->publicFormService->storeFormSubmission($data);
+        $this->publicFormService->storePatient($data);
 
         return redirect(route('public_form.show'));
     }
